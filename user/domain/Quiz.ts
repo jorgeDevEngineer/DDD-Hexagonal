@@ -46,7 +46,11 @@ export class Quiz {
         return new Quiz(id, ownerId, title, description, QuestionList.of([]));
     }
 
-    // --- ÚNICO GETTER PÚBLICO PARA DATOS ---
+    public updateInfo(newTitle: QuizTitle, newDescription: QuizDescription): void {
+        this._title = newTitle;
+        this._description = newDescription;
+    }
+
     public getSnapshot(): QuizSnapshot {
         return {
             id: this._id.value,
@@ -59,14 +63,9 @@ export class Quiz {
         };
     }
 
-    // El ID es a menudo la única excepción, ya que es la identidad del agregado.
     public get id(): QuizId { return this._id; }
 
-    // --- MÉTODOS DE COMPORTAMIENTO (LÓGICA DE NEGOCIO) ---
     public addQuestion(question: Question): void {
-        if (this._state !== QuizState.DRAFT) {
-            throw new Error("Cannot add questions to a quiz that is not in DRAFT state.");
-        }
         const updatedQuestions = [...this._questions.values, question];
         this._questions = QuestionList.of(updatedQuestions);
     }

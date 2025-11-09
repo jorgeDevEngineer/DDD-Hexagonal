@@ -1,57 +1,49 @@
-import {QuestionId, QuestionType, AnswerOption, QuestionDuration} from '../valueObjects/QuestionVO';
+import { 
+    QuestionId, 
+    QuestionType, 
+    AnswerOption, 
+    QuestionDuration, 
+    QuestionText, 
+    AnswerOptionsList 
+} from '../valueObjects/QuestionVO';
 
 export class Question {
     private constructor(
         private readonly _id: QuestionId,
-        private _text: string,
+        private _text: QuestionText,
         private _type: QuestionType,
-        private _options: AnswerOption[],
+        private _options: AnswerOptionsList,
         private _duration: QuestionDuration,
         private _basePoints: number = 1000 
-    ) {
-        this.validateOptions();
-    }
+    ) {}
 
-    // Static factory method for creation
+    // El método de factoría ahora exige los Value Objects correctos.
     public static create(
         id: QuestionId,
-        text: string,
+        text: QuestionText,
         type: QuestionType,
-        options: AnswerOption[],
+        options: AnswerOptionsList,
         duration: QuestionDuration
     ): Question {
+        // La validación de las opciones ahora está completamente delegada al VO AnswerOptionsList.
+        // Ya no es necesaria una llamada a this.validateOptions() aquí.
         return new Question(id, text, type, options, duration);
     }
 
-    // Getters for accessing state
+    // Getters para acceder al estado (devuelven los VOs o sus valores primitivos según sea necesario)
     public get id(): QuestionId { return this._id; }
-    public get text(): string { return this._text; }
+    public get text(): QuestionText { return this._text; }
     public get type(): QuestionType { return this._type; }
-    public get options(): AnswerOption[] { return [...this._options]; } 
+    public get options(): AnswerOptionsList { return this._options; } 
     public get duration(): QuestionDuration { return this._duration; }
     public get basePoints(): number { return this._basePoints; }
 
-    // Domain invariant validation logic
-    private validateOptions(): void {
-        const correctCount = this._options.filter(o => o.isCorrect).length;
-
-        if (this._type === QuestionType.MULTIPLE_CHOICE && (this._options.length < 2 || this._options.length > 4)) {
-             throw new Error("Multiple Choice requires between 2 and 4 options.");
-        }
-        
-        if (correctCount === 0) {
-            throw new Error("Every question must have at least one option marked as correct.");
-        }
-    }
-
-    // Methods to mutate state (Commands)
-    public editOptions(newOptions: AnswerOption[]): void {
+    // Los métodos de mutación también deben usar los VOs
+    public editOptions(newOptions: AnswerOptionsList): void {
         this._options = newOptions;
-        this.validateOptions(); // Re-validate the invariant
     }
 
-    public updateText(newText: string): void {
-        if (newText.trim().length === 0) throw new Error("Question text cannot be empty.");
+    public updateText(newText: QuestionText): void {
         this._text = newText;
     }
 }
