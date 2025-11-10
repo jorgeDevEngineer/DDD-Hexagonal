@@ -5,7 +5,7 @@ import {
     QuestionDuration, 
     QuestionText, 
     AnswerOptionsList 
-} from '../valueObjects/QuestionVO';
+} from '../ValueObjects/QuestionVO';
 
 export class Question {
     private constructor(

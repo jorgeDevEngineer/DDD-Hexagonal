@@ -1,4 +1,4 @@
-import { Question } from "../entities/Question";
+import { Question } from "../Entities/Question";
 
 export class QuizId {
     

@@ -1,20 +1,9 @@
-import { QuizRepository } from '../../../domain/interfaces/QuizRepository';
-import { QuizId, QuizState } from '../../../domain/valueObjects/QuizVO';
-import { UserId } from '../../../domain/valueObjects/UserVO';
+import { QuizRepository } from '../../domain/Repository/QuizRepository';
+import { QuizId, QuizState } from '../../domain/ValueObjects/QuizVO';
+import { UserId } from '../../domain/ValueObjects/UserVO';
+import {QuizNotFoundError, InvalidStatusError} from '../../domain/DomainErrors/QuizErrors'
 
-export class QuizNotFoundError extends Error {
-    constructor() {
-        super(`Quiz not found or you don't have permission to access it.`);
-    }
-}
-
-export class InvalidStatusTransitionError extends Error {
-    constructor(status: string) {
-        super(`Status '${status}' is not invalid.`);
-    }
-}
-
-export class QuizStatusUpdater {
+export class StatusQuizUpdate {
     constructor(private quizRepository: QuizRepository) { }
 
     async run(id: string, ownerId: string, newStatus: QuizState): Promise<void> {
@@ -35,7 +24,7 @@ export class QuizStatusUpdater {
                 break;
             default:
                 // Lanzar un error si se intenta una transición no soportada, como volver a DRAFT.
-                throw new InvalidStatusTransitionError(newStatus);
+                throw new InvalidStatusError(newStatus);
         }
 
         // 3. Persistir el estado actualizado del agregado.

@@ -1,7 +1,7 @@
-import { QuizRepository } from '../../../domain/interfaces/QuizRepository';
-import { QuizDescription, QuizTitle } from '../../../domain/valueObjects/QuizVO';
-import { UserId } from '../../../domain/valueObjects/UserVO';
-import { Quiz } from '../../../domain/quiz';
+import { QuizRepository } from '../../domain/Repository/QuizRepository';
+import { QuizDescription, QuizTitle } from '../../domain/ValueObjects/QuizVO';
+import { UserId } from '../../domain/ValueObjects/UserVO';
+import { Quiz } from '../../domain/quiz';
 
 export class QuizCreate {
     constructor(private quizRepository: QuizRepository) { }

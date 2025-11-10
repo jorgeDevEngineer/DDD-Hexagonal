@@ -1,0 +1,2 @@
+ npm i -D @types/pg
+ npm i pg

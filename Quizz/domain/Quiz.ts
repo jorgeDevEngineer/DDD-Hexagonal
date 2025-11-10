@@ -1,6 +1,6 @@
-import { QuizId, QuizTitle, QuizState, QuizDateValue, QuizDescription, QuestionList } from './valueObjects/QuizVO';
-import { Question } from './entities/Question';
-import { UserId } from './valueObjects/UserVO'; // Asumiendo que tienes un VO para UserId
+import { QuizId, QuizTitle, QuizState, QuizDateValue, QuizDescription, QuestionList } from './ValueObjects/QuizVO';
+import { Question } from './Entities/Question';
+import { UserId } from './ValueObjects/UserVO'; // Asumiendo que tienes un VO para UserId
 
 
 // Interfaz para el DTO/Snapshot. Define la estructura de datos que se expondrá.

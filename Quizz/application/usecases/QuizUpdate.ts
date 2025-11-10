@@ -1,14 +1,9 @@
-import { QuizRepository } from '../../../domain/interfaces/QuizRepository';
-import { QuizDescription, QuizId, QuizTitle } from '../../../domain/valueObjects/QuizVO';
-import { UserId } from '../../../domain/valueObjects/UserVO';
+import { QuizRepository } from '../../domain/Repository/QuizRepository';
+import { QuizDescription, QuizId, QuizTitle } from '../../domain/ValueObjects/QuizVO';
+import { UserId } from '../../domain/ValueObjects/UserVO';
+import {QuizNotFoundError} from '../../domain/DomainErrors/QuizErrors'
 
-export class QuizNotFoundError extends Error {
-    constructor() {
-        super(`Quiz not found or you don't have permission to access it.`);
-    }
-}
-
-export class QuizUpdater {
+export class QuizUpdate {
     constructor(private quizRepository: QuizRepository) { }
 
     async run(id: string, ownerId: string, newTitle: string, newDescription: string): Promise<void> {

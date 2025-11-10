@@ -1,7 +1,7 @@
-import { QuizRepository } from '../../../domain/interfaces/QuizRepository';
-import { QuizId } from '../../../domain/valueObjects/QuizVO';
-import { UserId } from '../../../domain/valueObjects/UserVO';
-import { Question } from '../../../domain/entities/Question';
+import { QuizRepository } from '../../domain/Repository/QuizRepository';
+import { QuizId } from '../../domain/ValueObjects/QuizVO';
+import { UserId } from '../../domain/ValueObjects/UserVO';
+import { Question } from '../../domain/Entities/Question';
 import { 
     QuestionId,
     QuestionText, 
@@ -9,14 +9,8 @@ import {
     AnswerOption, 
     AnswerOptionsList, 
     QuestionDuration 
-} from '../../../domain/valueObjects/QuestionVO';
-
-export class QuizNotFoundError extends Error {
-    constructor() {
-        super(`Quiz not found or you don't have permission to access it.`);
-    }
-}
-
+} from '../../domain/ValueObjects/QuestionVO';
+import {QuizNotFoundError} from '../../domain/DomainErrors/QuizErrors'
 // Interfaz para los datos de entrada de la pregunta
 export interface QuestionData {
     text: string;
@@ -25,7 +19,7 @@ export interface QuestionData {
     options: { text: string; isCorrect: boolean }[];
 }
 
-export class QuizQuestionAdder {
+export class QuestionQuizAdder {
     constructor(private quizRepository: QuizRepository) { }
 
     async run(quizIdStr: string, ownerIdStr: string, questionData: QuestionData): Promise<void> {
@@ -45,6 +39,7 @@ export class QuizQuestionAdder {
         );
         const answerOptionsList = AnswerOptionsList.of(answerOptions, questionData.type);
 
+        //Intanciamos
         const newQuestion = Question.create(
             newQuestionId,
             questionText, // Se pasa el objeto completo, no questionText.value
@@ -53,8 +48,9 @@ export class QuizQuestionAdder {
             questionDuration
         );
     
-        quiz.addQuestion(newQuestion);
 
+        quiz.addQuestion(newQuestion);
+        
         await this.quizRepository.update(quiz);
     }
 }
